@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * Контроллер аутентификации.
  * Обрабатывает отображение страницы входа в систему.
  *
- * @author Студент группы _______
+ * @author Студент группы ДЦПУП23-1
  * @version 1.0
  */
 @Controller
