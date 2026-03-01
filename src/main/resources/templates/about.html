@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Об авторе')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="container">
+    <div class="about-card">
+        <div class="about-icon">✈</div>
+        <h1>Об авторе</h1>
+
+        <table class="about-table">
+            <tr>
+                <td>Тема курсовой работы:</td>
+                <td><strong>Информационно-справочная система учёта рейсов авиакомпании</strong></td>
+            </tr>
+            <tr>
+                <td>Дисциплина:</td>
+                <td>Проектирование информационно-справочной системы авиакомпании</td>
+            </tr>
+            <tr>
+                <td>Автор:</td>
+                <td>________ (Ф.И.О.)</td>
+            </tr>
+            <tr>
+                <td>Группа:</td>
+                <td>_______</td>
+            </tr>
+            <tr>
+                <td>Научный руководитель:</td>
+                <td>________ (Ф.И.О.)</td>
+            </tr>
+            <tr>
+                <td>Учебное заведение:</td>
+                <td>Финансовый университет при Правительстве Российской Федерации</td>
+            </tr>
+            <tr>
+                <td>Год:</td>
+                <td>2025</td>
+            </tr>
+            <tr>
+                <td>Версия программы:</td>
+                <td>1.0.0</td>
+            </tr>
+        </table>
+
+        <div class="tech-stack">
+            <h2>Стек технологий</h2>
+            <div class="tech-tags">
+                <span class="tech-tag">Java 17</span>
+                <span class="tech-tag">Spring Boot 3</span>
+                <span class="tech-tag">Spring Security</span>
+                <span class="tech-tag">Spring Data JPA</span>
+                <span class="tech-tag">Thymeleaf</span>
+                <span class="tech-tag">PostgreSQL</span>
+                <span class="tech-tag">Hibernate</span>
+                <span class="tech-tag">Gradle</span>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

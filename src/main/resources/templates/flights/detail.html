@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Рейс')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="container">
+    <a th:href="@{/flights}" class="back-link">← Назад к расписанию</a>
+
+    <!-- Карточка рейса -->
+    <div class="flight-card">
+        <div class="flight-card-header">
+            <h1 th:text="${flight.flightNumber}"></h1>
+            <span class="status-badge status-large"
+                  th:classappend="'status-' + ${flight.status.toLowerCase()}"
+                  th:text="${flight.status}"></span>
+        </div>
+
+        <div class="flight-info-grid">
+            <div class="info-block">
+                <div class="airport-code" th:text="${flight.departureAirport.iataCode}"></div>
+                <div class="airport-name" th:text="${flight.departureAirport.city}"></div>
+                <div class="time-planned" th:text="${#temporals.format(flight.plannedDeparture, 'dd.MM.yyyy HH:mm')}"></div>
+                <div th:if="${flight.actualDeparture}" class="time-actual"
+                     th:text="'Факт: ' + ${#temporals.format(flight.actualDeparture, 'HH:mm')}"></div>
+            </div>
+            <div class="flight-arrow">✈</div>
+            <div class="info-block">
+                <div class="airport-code" th:text="${flight.arrivalAirport.iataCode}"></div>
+                <div class="airport-name" th:text="${flight.arrivalAirport.city}"></div>
+                <div class="time-planned" th:text="${#temporals.format(flight.plannedArrival, 'dd.MM.yyyy HH:mm')}"></div>
+                <div th:if="${flight.actualArrival}" class="time-actual"
+                     th:text="'Факт: ' + ${#temporals.format(flight.actualArrival, 'HH:mm')}"></div>
+            </div>
+        </div>
+
+        <div class="flight-meta">
+            <span th:text="'Воздушное судно: ' + ${flight.aircraft.model} + ' (' + ${flight.aircraft.registrationNumber} + ')'"></span>
+            <span th:if="${flight.delayMinutes > 0}" class="delay-badge"
+                  th:text="'Задержка: ' + ${flight.delayMinutes} + ' мин'"></span>
+        </div>
+    </div>
+
+    <!-- Форма смены статуса (только для администратора) -->
+    <div sec:authorize="hasRole('ADMIN')" class="card">
+        <h2>Изменить статус рейса</h2>
+        <form th:action="@{/admin/flights/status}" method="post" class="status-form">
+            <input type="hidden" name="flightId" th:value="${flight.id}"/>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Новый статус</label>
+                    <select name="newStatus" required>
+                        <option value="CHECK_IN">Регистрация (CHECK_IN)</option>
+                        <option value="DEPARTED">Вылетел (DEPARTED)</option>
+                        <option value="ARRIVED">Выполнен (ARRIVED)</option>
+                        <option value="DELAYED">Задержан (DELAYED)</option>
+                        <option value="CANCELLED">Отменён (CANCELLED)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Фактическое время (для вылета/прилёта)</label>
+                    <input type="datetime-local" name="actualTime"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Причина (обязательна для задержки/отмены)</label>
+                <input type="text" name="reason" placeholder="Например: Техническая неисправность"/>
+            </div>
+            <button type="submit" class="btn btn-primary">Обновить статус</button>
+        </form>
+    </div>
+
+    <!-- Журнал событий -->
+    <div class="card">
+        <h2>Журнал событий рейса</h2>
+        <div th:if="${#lists.isEmpty(log)}" class="text-muted">
+            <p>Событий пока не зафиксировано.</p>
+        </div>
+        <table th:unless="${#lists.isEmpty(log)}" class="table table-sm">
+            <thead>
+            <tr>
+                <th>Дата и время</th>
+                <th>Предыдущий статус</th>
+                <th>Новый статус</th>
+                <th>Причина</th>
+                <th>Сотрудник</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="entry : ${log}">
+                <td th:text="${#temporals.format(entry.eventTime, 'dd.MM.yyyy HH:mm')}"></td>
+                <td><span class="status-badge status-sm"
+                          th:classappend="'status-' + ${entry.previousStatus.toLowerCase()}"
+                          th:text="${entry.previousStatus}"></span></td>
+                <td><span class="status-badge status-sm"
+                          th:classappend="'status-' + ${entry.newStatus.toLowerCase()}"
+                          th:text="${entry.newStatus}"></span></td>
+                <td th:text="${entry.reason != null ? entry.reason : '—'}"></td>
+                <td th:text="${entry.operator != null ? entry.operator.fullName : '—'}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

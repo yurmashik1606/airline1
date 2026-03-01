@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${title} + ' — АвиаУчёт'">АвиаУчёт</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<nav th:fragment="navbar" class="navbar">
+    <div class="navbar-brand">
+        <a th:href="@{/flights}">✈ АвиаУчёт</a>
+    </div>
+    <div class="navbar-links">
+        <a th:href="@{/flights}" th:classappend="${#httpServletRequest.requestURI == '/flights'} ? 'active'">Рейсы</a>
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin}"
+           th:classappend="${#httpServletRequest.requestURI.startsWith('/admin')} ? 'active'">Панель администратора</a>
+        <a th:href="@{/about}">Об авторе</a>
+    </div>
+    <div class="navbar-user">
+        <span sec:authentication="name"></span>
+        <form th:action="@{/logout}" method="post" style="display:inline">
+            <button type="submit" class="btn-logout">Выйти</button>
+        </form>
+    </div>
+</nav>
+
+</body>
+</html>

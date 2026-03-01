@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Панель администратора')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="container">
+    <h1>Панель администратора</h1>
+
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+    <!-- Статистика -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number" th:text="${scheduledCount}"></div>
+            <div class="stat-label">Запланировано</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" th:text="${departedCount}"></div>
+            <div class="stat-label">В воздухе</div>
+        </div>
+        <div class="stat-card stat-warn">
+            <div class="stat-number" th:text="${delayedCount}"></div>
+            <div class="stat-label">Задержано</div>
+        </div>
+        <div class="stat-card stat-good">
+            <div class="stat-number" th:text="${otp} + '%'"></div>
+            <div class="stat-label">Пунктуальность (OTP)</div>
+        </div>
+    </div>
+
+    <!-- Управление рейсами -->
+    <div class="card">
+        <div class="card-header">
+            <h2>Рейсы</h2>
+            <a th:href="@{/admin/flights/new}" class="btn btn-primary">+ Добавить рейс</a>
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Номер</th>
+                <th>Маршрут</th>
+                <th>Воздушное судно</th>
+                <th>Вылет</th>
+                <th>Статус</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="flight : ${flights}">
+                <td th:text="${flight.flightNumber}"></td>
+                <td th:text="${flight.departureAirport.iataCode + ' → ' + flight.arrivalAirport.iataCode}"></td>
+                <td th:text="${flight.aircraft.registrationNumber}"></td>
+                <td th:text="${#temporals.format(flight.plannedDeparture, 'dd.MM HH:mm')}"></td>
+                <td><span class="status-badge" th:classappend="'status-' + ${flight.status.toLowerCase()}"
+                          th:text="${flight.status}"></span></td>
+                <td>
+                    <a th:href="@{/flights/{id}(id=${flight.id})}" class="btn btn-sm">Журнал</a>
+                    <form th:action="@{/admin/flights/delete/{id}(id=${flight.id})}"
+                          method="post" style="display:inline"
+                          onsubmit="return confirm('Удалить рейс?')">
+                        <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Воздушные суда -->
+    <div class="card">
+        <h2>Воздушные суда</h2>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Модель</th>
+                <th>Рег. номер</th>
+                <th>Мест (эконом)</th>
+                <th>Мест (бизнес)</th>
+                <th>Статус</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="ac : ${aircraft}">
+                <td th:text="${ac.model}"></td>
+                <td th:text="${ac.registrationNumber}"></td>
+                <td th:text="${ac.economySeats}"></td>
+                <td th:text="${ac.businessSeats}"></td>
+                <td th:text="${ac.status}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Аэропорты -->
+    <div class="card">
+        <h2>Аэропорты</h2>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Код ИАТА</th>
+                <th>Название</th>
+                <th>Город</th>
+                <th>Страна</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="airport : ${airports}">
+                <td><strong th:text="${airport.iataCode}"></strong></td>
+                <td th:text="${airport.name}"></td>
+                <td th:text="${airport.city}"></td>
+                <td th:text="${airport.country}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Вход — АвиаУчёт</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body class="login-page">
+<div class="login-container">
+    <div class="login-logo">✈</div>
+    <h1 class="login-title">АвиаУчёт</h1>
+    <p class="login-subtitle">Система учёта рейсов авиакомпании</p>
+
+    <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+    <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+
+    <form th:action="@{/login}" method="post" class="login-form">
+        <div class="form-group">
+            <label for="username">Логин</label>
+            <input type="text" id="username" name="username"
+                   placeholder="Введите логин" required autofocus/>
+        </div>
+        <div class="form-group">
+            <label for="password">Пароль</label>
+            <input type="password" id="password" name="password"
+                   placeholder="Введите пароль" required/>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">Войти в систему</button>
+    </form>
+
+    <div class="login-hint">
+        <p><strong>Администратор:</strong> admin / admin123</p>
+        <p><strong>Диспетчер:</strong> dispatcher / disp123</p>
+    </div>
+</div>
+</body>
+</html>
