@@ -12,7 +12,7 @@ import java.util.List;
  * Сервис управления пользователями системы.
  * Реализует интерфейс {@link UserDetailsService} для интеграции со Spring Security.
  *
- * @author Студент группы _______
+ * @author Студент группы ДЦПУП23-1
  * @version 1.0
  */
 @Service
