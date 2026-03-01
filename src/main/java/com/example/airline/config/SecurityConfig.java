@@ -13,7 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
  * Конфигурация безопасности приложения.
  * Определяет правила доступа к страницам и настраивает шифрование паролей.
  *
- * @author Студент группы _______
+ * @author Студент группы ДЦПУП23-1
  * @version 1.0
  */
 @Configuration
