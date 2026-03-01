@@ -11,7 +11,7 @@ import java.util.List;
  * Является дочерней сущностью по отношению к {@link Aircraft} и {@link Airport},
  * и родительской — по отношению к {@link FlightLog}.
  *
- * @author Студент группы _______
+ * @author Студент группы ДЦПУП23-1
  * @version 1.0
  */
 @Entity
