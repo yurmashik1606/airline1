@@ -8,7 +8,7 @@ import java.util.Optional;
 /**
  * Репозиторий для работы с аэропортами.
  *
- * @author Студент группы _______
+ * @author Студент группы ДЦПУП23-1
  * @version 1.0
  */
 @Repository
