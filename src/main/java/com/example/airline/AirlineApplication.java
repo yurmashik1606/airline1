@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Главный класс запуска приложения.
  * Информационно-справочная система учёта рейсов авиакомпании.
  *
- * @author Студент группы _______
+ * @author Студент группы ДЦПУП23-1
  * @version 1.0
  */
 @SpringBootApplication
